@@ -1,0 +1,17 @@
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\bin\Debug\TA_KelompokFiona.exe.config
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\bin\Debug\TA_KelompokFiona.exe
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\bin\Debug\TA_KelompokFiona.pdb
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.csproj.AssemblyReference.cache
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Properties.Resources.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.csproj.GenerateResource.cache
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.csproj.CoreCompileInputs.cache
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.exe
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.pdb
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Login.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Admin.AdminHome.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Admin.AdminStudent.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Admin.AdminPage.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Admin.AdminQuestions.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Student.StudentHome.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Student.StudentPage.resources
+D:\Data\UPH\Sem 5\Business Application Programming\Tugas Akhir Project\TA_KelompokFiona\TA_KelompokFiona\obj\Debug\TA_KelompokFiona.Exam.Exam.resources
