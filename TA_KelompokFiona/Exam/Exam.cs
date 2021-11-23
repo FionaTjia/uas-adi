@@ -19,8 +19,8 @@ namespace TA_KelompokFiona.Exam
         private List<Questions> questions = new List<Questions>();
         private DateTime startTime;
         private Form parent;
-        private int page= 0;
-
+        private int page = 0;
+        private Dictionary<int, string> answers = new Dictionary<int, string>();
 
         public Exam(String id,String topik,Form parent)
         {
@@ -54,7 +54,7 @@ namespace TA_KelompokFiona.Exam
 
         }
 
-        private class Questions
+        public class Questions
         {
             public String id { get; set; }
             public String q { get; set; }
@@ -84,6 +84,11 @@ namespace TA_KelompokFiona.Exam
             String seconds = (60 - (Math.Truncate(ts.TotalSeconds) % 60)).ToString();
             String minutes = (19 - Math.Truncate(ts.TotalMinutes)).ToString();
             timerLabel.Text = minutes + ":" + seconds;
+            if(seconds == "0" && minutes == "0")
+            {
+                timer1.Stop();
+                saveAnswer();
+            }
         }
 
         private void loadQuestion()
@@ -97,7 +102,8 @@ namespace TA_KelompokFiona.Exam
             {
                 if(c is RadioButton)
                 {
-                    //c.
+                    RadioButton r = (RadioButton) c;
+                    r.Checked = false;
                 }
             }
         }
@@ -110,6 +116,89 @@ namespace TA_KelompokFiona.Exam
         private bool canPrev()
         {
             return page != 0;
+        }
+
+        private void nB_Click(object sender, EventArgs e)
+        {
+            this.page++;
+            if (canNext())
+            {
+                nB.Enabled = true;
+            }
+            else
+            {
+                nB.Enabled = false;
+            }
+            if (canPrev())
+            {
+                pB.Enabled = true;       
+            }
+            else
+            {
+                pB.Enabled = false;
+            }
+            loadQuestion();
+        }
+
+        private void rA_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rA.Checked)
+            {
+                answers.Add(page, "a");
+            }
+        }
+
+        private void rB_CheckedChanged(object sender, EventArgs e)
+        {
+            if(rB.Checked)
+            {
+                answers.Add(page, "b");
+            }
+        }
+
+        private void rC_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rC.Checked)
+            {
+                answers.Add(page, "c");
+            }
+        }
+
+        private void saveAnswer()
+        {            
+            for (int i = 0; i < 10; i++)
+            {
+                if (answers.ContainsKey(i))
+                {
+                    String query = "INSERT INTO answers(sessionid,questionid,topik,studentid,questionid) values(@sessionid,@topik,@studentid,@questionid)";
+                    SqlCommand cmd = new SqlCommand(query, connection.DBConnection.cnn);
+                    string studentAnswer;
+                    answers.TryGetValue(i, out studentAnswer);
+                    cmd.Parameters.AddWithValue("@sessionid", sessionid);
+                    cmd.Parameters.AddWithValue("@topik", topik);
+                    cmd.Parameters.AddWithValue("@studentid", id);
+                    cmd.Parameters.AddWithValue("@questionid", questions[i].id);
+                    cmd.Parameters.AddWithValue("@answer", studentAnswer);
+                    cmd.ExecuteNonQuery();
+                }                      
+            }
+            Form f = new ExamResult(answers,questions,this);
+            f.Show();
+        }
+
+        private void submitBtn_Click(object sender, EventArgs e)
+        {
+            bool flag = true;
+            for(int i = 0; i < 10; i++)
+            {
+                if (!answers.ContainsKey(i))
+                {
+                    flag = false;
+                    MessageBox.Show("Soal " + ( i + 1 ) + "Belom dijawab");
+                }
+            }
+            if(flag)
+                saveAnswer();
         }
     }
 }

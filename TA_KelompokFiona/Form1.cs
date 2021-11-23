@@ -92,7 +92,13 @@ namespace TA_KelompokFiona
             cmd.Parameters.AddWithValue("@phone", rPhone.Text);
             cmd.Parameters.AddWithValue("@topik", rTopik.SelectedItem.ToString());
             
-            cmd.ExecuteNonQuery();
+            try{
+                cmd.ExecuteNonQuery();
+            } catch(SqlException e){
+                if(e.ErrorCode == 2627){
+                    MessageBox.Show("Email telah terdaftar");
+                }
+            }
             rName.Text = "";
             rEmail.Text = "";
             rPassword.Text = ""; 

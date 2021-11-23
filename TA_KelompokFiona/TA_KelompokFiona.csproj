@@ -77,6 +77,12 @@
     <Compile Include="Exam\Exam.Designer.cs">
       <DependentUpon>Exam.cs</DependentUpon>
     </Compile>
+    <Compile Include="Exam\ExamResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Exam\ExamResult.Designer.cs">
+      <DependentUpon>ExamResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +102,12 @@
     </Compile>
     <Compile Include="Student\StudentPage.Designer.cs">
       <DependentUpon>StudentPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Student\StudentResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Student\StudentResult.Designer.cs">
+      <DependentUpon>StudentResult.cs</DependentUpon>
     </Compile>
     <Compile Include="TA_KelompokFionaDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -127,6 +139,9 @@
     <EmbeddedResource Include="Exam\Exam.resx">
       <DependentUpon>Exam.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Exam\ExamResult.resx">
+      <DependentUpon>ExamResult.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -144,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Student\StudentPage.resx">
       <DependentUpon>StudentPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Student\StudentResult.resx">
+      <DependentUpon>StudentResult.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
