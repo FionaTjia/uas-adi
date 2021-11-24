@@ -94,8 +94,8 @@ namespace TA_KelompokFiona
             
             try{
                 cmd.ExecuteNonQuery();
-            } catch(SqlException e){
-                if(e.ErrorCode == 2627){
+            } catch(SqlException err){
+                if(err.ErrorCode == 2627){
                     MessageBox.Show("Email telah terdaftar");
                 }
             }

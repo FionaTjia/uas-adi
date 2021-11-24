@@ -29,6 +29,8 @@ namespace TA_KelompokFiona.Exam
             this.topik = topik;
             generateSessionId();
             getSoal();
+            loadQuestion();
+            setBtn();
             startTime = DateTime.Now;
             timer1.Start();
             this.parent = parent;
@@ -41,9 +43,10 @@ namespace TA_KelompokFiona.Exam
 
         private void getSoal()
         {
-            String query = "select top 10 percent * from questions where topik = @topik order by newid()";
+            String query = "select top 10 * from questions where topik = @topik order by newid()";
             SqlCommand cmd = new SqlCommand(query,connection.DBConnection.cnn);
-            cmd.Parameters.AddWithValue("@topik", this.topik);
+            String t = this.topik.Trim();
+            cmd.Parameters.AddWithValue("@topik", t);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -51,7 +54,7 @@ namespace TA_KelompokFiona.Exam
                 questions.Add(q);
             }
             reader.Close();
-
+            
         }
 
         public class Questions
@@ -69,10 +72,10 @@ namespace TA_KelompokFiona.Exam
             {
                 this.id = reader.GetInt32(0).ToString();
                 this.q = reader.GetString(1);
-                this.a = reader.GetString(1);
-                this.b = reader.GetString(2);
-                this.c = reader.GetString(3);
-                this.ans = reader.GetString(4);
+                this.a = reader.GetString(2);
+                this.b = reader.GetString(3);
+                this.c = reader.GetString(4);
+                this.ans = reader.GetString(5);
             }
         }
 
@@ -81,10 +84,10 @@ namespace TA_KelompokFiona.Exam
             DateTime currenTime = DateTime.Now;
             TimeSpan ts = currenTime - startTime;
             
-            String seconds = (60 - (Math.Truncate(ts.TotalSeconds) % 60)).ToString();
-            String minutes = (19 - Math.Truncate(ts.TotalMinutes)).ToString();
+            int seconds = (int)(60 - (Math.Truncate(ts.TotalSeconds) % 60));
+            int minutes = (int)(19 - Math.Truncate(ts.TotalMinutes));
             timerLabel.Text = minutes + ":" + seconds;
-            if(seconds == "0" && minutes == "0")
+            if(seconds <= 0 && minutes <= 0 )
             {
                 timer1.Stop();
                 saveAnswer();
@@ -94,23 +97,36 @@ namespace TA_KelompokFiona.Exam
         private void loadQuestion()
         {
             Questions q = questions[page];
+            noLabel.Text = (page + 1) + ".";
             qT.Text = q.q;
             rA.Text = q.a;
             rB.Text = q.b;
             rC.Text = q.c;
-            foreach(Control c in radioP.Controls)
+            if (answers.ContainsKey(page))
             {
-                if(c is RadioButton)
-                {
-                    RadioButton r = (RadioButton) c;
-                    r.Checked = false;
-                }
+                String a;
+                answers.TryGetValue(page, out a);
+                if (a == "a")
+                    rA.Checked = true;
+                else if (a == "b")
+                    rB.Checked = true;
+                else if (a == "c")
+                    rC.Checked = true;
             }
+            else 
+                foreach (Control c in radioP.Controls)
+                {                                
+                    if(c is RadioButton)
+                    {
+                        RadioButton r = (RadioButton) c;
+                        r.Checked = false;
+                    }
+                }            
         }
 
         private bool canNext()
         {
-            return page < questions.Count();
+            return page < questions.Count() - 1;
         }
 
         private bool canPrev()
@@ -121,6 +137,89 @@ namespace TA_KelompokFiona.Exam
         private void nB_Click(object sender, EventArgs e)
         {
             this.page++;
+            setBtn();
+            loadQuestion();
+        }
+
+        private void rA_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rA.Checked)
+            {
+
+                answers[page] = "a";
+            }
+        }
+
+        private void rB_CheckedChanged(object sender, EventArgs e)
+        {
+            if(rB.Checked)
+            {
+                answers[page] = "b";                
+            }
+        }
+
+        private void rC_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rC.Checked)
+            {
+                answers[page] = "c";
+            }
+        }
+
+        private void saveAnswer()
+        {            
+            for (int i = 0; i < 10; i++)
+            {
+                if (answers.ContainsKey(i))
+                {
+                    String query = "INSERT INTO answers(sessionid,topik,studentid,questionid,answer,result) " +
+                        "values(@sessionid,@topik,@studentid,@questionid,@answer,@result)";
+                    SqlCommand cmd = new SqlCommand(query, connection.DBConnection.cnn);
+                    string studentAnswer;
+                    answers.TryGetValue(i, out studentAnswer);
+                    cmd.Parameters.AddWithValue("@sessionid", sessionid);
+                    cmd.Parameters.AddWithValue("@topik", topik);
+                    cmd.Parameters.AddWithValue("@studentid", id);
+                    cmd.Parameters.AddWithValue("@questionid", questions[i].id);
+
+                    cmd.Parameters.AddWithValue("@answer", studentAnswer);
+                    int result = 0;
+                    if (studentAnswer == questions[i].ans)
+                        result = 1;
+                    cmd.Parameters.AddWithValue("@result", result);
+                    cmd.ExecuteNonQuery();
+                }                      
+            }
+            Form f = new ExamResult(answers,questions,this,parent);
+            f.Show();
+        }
+
+        private void submitBtn_Click(object sender, EventArgs e)
+        {
+            bool flag = true;
+            List<String> lines = new List<String>();
+            for (int i = 0; i < 10; i++)
+            {
+                if (!answers.ContainsKey(i))
+                {
+                    flag = false;
+                    lines.Add((i + 1 ).ToString()); 
+                }
+            }
+            if(flag)
+                saveAnswer();
+            else
+                MessageBox.Show("Soal " + String.Join(",",lines) + " Belom dijawab");
+        }
+
+        private void pB_Click(object sender, EventArgs e)
+        {
+            this.page--;
+            setBtn();
+            loadQuestion();
+        }
+        private void setBtn()
+        {
             if (canNext())
             {
                 nB.Enabled = true;
@@ -131,74 +230,12 @@ namespace TA_KelompokFiona.Exam
             }
             if (canPrev())
             {
-                pB.Enabled = true;       
+                pB.Enabled = true;
             }
             else
             {
                 pB.Enabled = false;
             }
-            loadQuestion();
-        }
-
-        private void rA_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rA.Checked)
-            {
-                answers.Add(page, "a");
-            }
-        }
-
-        private void rB_CheckedChanged(object sender, EventArgs e)
-        {
-            if(rB.Checked)
-            {
-                answers.Add(page, "b");
-            }
-        }
-
-        private void rC_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rC.Checked)
-            {
-                answers.Add(page, "c");
-            }
-        }
-
-        private void saveAnswer()
-        {            
-            for (int i = 0; i < 10; i++)
-            {
-                if (answers.ContainsKey(i))
-                {
-                    String query = "INSERT INTO answers(sessionid,questionid,topik,studentid,questionid) values(@sessionid,@topik,@studentid,@questionid)";
-                    SqlCommand cmd = new SqlCommand(query, connection.DBConnection.cnn);
-                    string studentAnswer;
-                    answers.TryGetValue(i, out studentAnswer);
-                    cmd.Parameters.AddWithValue("@sessionid", sessionid);
-                    cmd.Parameters.AddWithValue("@topik", topik);
-                    cmd.Parameters.AddWithValue("@studentid", id);
-                    cmd.Parameters.AddWithValue("@questionid", questions[i].id);
-                    cmd.Parameters.AddWithValue("@answer", studentAnswer);
-                    cmd.ExecuteNonQuery();
-                }                      
-            }
-            Form f = new ExamResult(answers,questions,this);
-            f.Show();
-        }
-
-        private void submitBtn_Click(object sender, EventArgs e)
-        {
-            bool flag = true;
-            for(int i = 0; i < 10; i++)
-            {
-                if (!answers.ContainsKey(i))
-                {
-                    flag = false;
-                    MessageBox.Show("Soal " + ( i + 1 ) + "Belom dijawab");
-                }
-            }
-            if(flag)
-                saveAnswer();
         }
     }
 }

@@ -95,6 +95,7 @@ namespace TA_KelompokFiona.Student
             this.retakeToolStripMenuItem.Name = "retakeToolStripMenuItem";
             this.retakeToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.retakeToolStripMenuItem.Text = "Retake";
+            this.retakeToolStripMenuItem.Click += new System.EventHandler(this.retakeToolStripMenuItem_Click);
             // 
             // StudentHome
             // 

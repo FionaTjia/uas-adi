@@ -93,5 +93,13 @@ namespace TA_KelompokFiona.Student
             parent.Hide();
             f.Show();
         }
+
+        private void retakeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            String topik = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+            Form f = new Exam.Exam(studentid, topik, parent);
+            parent.Hide();
+            f.Show();
+        }
     }
 }

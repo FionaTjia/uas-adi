@@ -34,6 +34,13 @@ namespace TA_KelompokFiona.Student
                 tabPage1.Controls.Add(f);
                 f.Show();
             }
+            else if(tabControl1.SelectedIndex == 1)
+            {
+                StudentResult f = new StudentResult(this.id);
+                f.TopLevel = false;
+                tabPage2.Controls.Add(f);
+                f.Show();
+            }
         }
     }
 }

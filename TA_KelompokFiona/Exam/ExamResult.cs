@@ -16,12 +16,14 @@ namespace TA_KelompokFiona.Exam
         List<Exam.Questions> questions;
         int correctCount = 0;
         Form parent;
-        public ExamResult(Dictionary<int,string> answers, List<Exam.Questions> questions,Form parent)
+        Form mainForm;
+        public ExamResult(Dictionary<int,string> answers, List<Exam.Questions> questions,Form parent,Form mainForm)
         {
             InitializeComponent();
             this.answers = answers;
             this.questions = questions;
             this.parent = parent;
+            this.mainForm = mainForm;
             this.loadData();
         }
 
@@ -52,9 +54,10 @@ namespace TA_KelompokFiona.Exam
         }
 
         private void destroy()
-        {
-            this.Close();
-            this.parent.Close();
+        {            
+            this.Dispose();
+            this.parent.Dispose();
+            this.mainForm.Show();
         }
 
         private void ExamResult_FormClosed(object sender, FormClosedEventArgs e)
